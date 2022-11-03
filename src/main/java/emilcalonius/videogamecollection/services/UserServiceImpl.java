@@ -1,11 +1,13 @@
 package emilcalonius.videogamecollection.services;
 
 import emilcalonius.videogamecollection.models.User;
+import emilcalonius.videogamecollection.repositories.GameRepository;
 import emilcalonius.videogamecollection.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -13,9 +15,11 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
+    private final GameRepository gameRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, GameRepository gameRepository) {
         this.userRepository = userRepository;
+        this.gameRepository = gameRepository;
     }
 
     @Override
@@ -44,16 +48,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Integer id) {
         if(!userRepository.existsById(id)) {
             logger.warn("No user exists with ID: " + id);
             return;
         }
+        // Delete all user's games when deleting user
+        gameRepository.findAllByUser(id).forEach(gameRepository::delete);
         userRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public void delete(User user) {
+        if(!userRepository.existsById(user.getId())) {
+            logger.warn("No user exists with ID: " + user.getId());
+            return;
+        }
+        // Delete all user's games when deleting user
+        gameRepository.findAllByUser(user.getId()).forEach(gameRepository::delete);
         userRepository.delete(user);
     }
 }
