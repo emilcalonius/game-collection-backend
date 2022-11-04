@@ -3,7 +3,7 @@ package emilcalonius.videogamecollection.models;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserGETDTO {
     private int id;
     private String name;
     private String bio;
