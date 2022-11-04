@@ -29,4 +29,19 @@ public class UserController {
     }
 
     // TODO user search
+
+    @PostMapping
+    public ResponseEntity addUser(@RequestBody UserPOSTDTO userPOSTDTO) {
+        // If username exists don't add
+        if(userService.findByName(userPOSTDTO.getName()) != null) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("User already exists with that username!");
+        }
+        User user = userService.add(userMapper.userPOSTDTOToUser(userPOSTDTO));
+        URI location = URI.create("user/" + user.getId());
+        return ResponseEntity
+                .created(location)
+                .build();
+    }
 }

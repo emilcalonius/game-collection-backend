@@ -11,4 +11,7 @@ import java.util.Set;
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.name LIKE %?1%")
     Set<User> findAllByName(String name);
+
+    @Query("SELECT u FROM User u WHERE u.name = ?1")
+    User findByName(String name);
 }
