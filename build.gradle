@@ -30,6 +30,7 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
 }
 
 tasks.named('test') {
