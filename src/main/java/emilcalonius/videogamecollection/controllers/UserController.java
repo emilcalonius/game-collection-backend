@@ -5,6 +5,11 @@ import emilcalonius.videogamecollection.models.User;
 import emilcalonius.videogamecollection.models.UserGETDTO;
 import emilcalonius.videogamecollection.models.UserPOSTDTO;
 import emilcalonius.videogamecollection.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,21 +27,29 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @GetMapping
-    public ResponseEntity<User> getCurrentUser() {
-        // TODO
-        return ResponseEntity.ok(userService.findById(1));
-    }
+    // TODO get current user
 
     // TODO user search
 
+    // TODO update user
+
+    @Operation(summary = "Create new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "User successfully added",
+                    content = @Content),
+            @ApiResponse(responseCode = "409",
+                    description = "User already exists with that username",
+                    content = @Content)
+
+    })
     @PostMapping
-    public ResponseEntity addUser(@RequestBody UserPOSTDTO userPOSTDTO) {
+    public ResponseEntity add(@RequestBody UserPOSTDTO userPOSTDTO) {
         // If username exists don't add
         if(userService.findByName(userPOSTDTO.getName()) != null) {
             return ResponseEntity
-                    .status(HttpStatus.FORBIDDEN)
-                    .body("User already exists with that username!");
+                    .status(HttpStatus.CONFLICT)
+                    .body("User already exists with that username");
         }
         User user = userService.add(userMapper.userPOSTDTOToUser(userPOSTDTO));
         URI location = URI.create("user/" + user.getId());
