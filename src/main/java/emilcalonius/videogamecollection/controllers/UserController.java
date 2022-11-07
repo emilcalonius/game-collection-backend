@@ -32,15 +32,4 @@ public class UserController {
     // TODO user search
 
     // TODO update user
-
-    @Operation(summary = "Create new user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204",
-                    description = "User successfully added",
-                    content = @Content),
-            @ApiResponse(responseCode = "409",
-                    description = "User already exists with that username",
-                    content = @Content)
-
-    })
 }

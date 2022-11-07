@@ -30,12 +30,12 @@ public class AuthController {
 
     @Operation(summary = "Add a new user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204",
-                    description = "User successfully added",
-                    content = @Content),
-            @ApiResponse(responseCode = "409",
-                    description = "User already exists with that username",
-                    content = @Content)
+        @ApiResponse(responseCode = "204",
+            description = "User successfully added",
+            content = @Content),
+        @ApiResponse(responseCode = "409",
+            description = "User already exists with that username",
+            content = @Content)
 
     })
     @PostMapping("/register")
