@@ -43,18 +43,4 @@ public class UserController {
                     content = @Content)
 
     })
-    @PostMapping
-    public ResponseEntity add(@RequestBody UserPOSTDTO userPOSTDTO) {
-        // If username exists don't add
-        if(userService.findByName(userPOSTDTO.getName()) != null) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body("User already exists with that username");
-        }
-        User user = userService.add(userMapper.userPOSTDTOToUser(userPOSTDTO));
-        URI location = URI.create("user/" + user.getId());
-        return ResponseEntity
-                .created(location)
-                .build();
-    }
 }
