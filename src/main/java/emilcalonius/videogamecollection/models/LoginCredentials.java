@@ -1,15 +1,14 @@
 package emilcalonius.videogamecollection.models;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 
 @Getter
 @Setter
-@Entity
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class LoginCredentials {
     private String name;
     private String password;
