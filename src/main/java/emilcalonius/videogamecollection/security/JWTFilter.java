@@ -1,12 +1,9 @@
 package emilcalonius.videogamecollection.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import emilcalonius.videogamecollection.models.User;
-import emilcalonius.videogamecollection.services.UserDetailsServiceImpl;
-import emilcalonius.videogamecollection.services.UserService;
+import emilcalonius.videogamecollection.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -17,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
@@ -25,7 +21,7 @@ public class JWTFilter extends OncePerRequestFilter {
     private JWTUtil jwtUtil;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private MyUserDetailsService myUserDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -41,7 +37,7 @@ public class JWTFilter extends OncePerRequestFilter {
             } else {
                 try {
                     String name = jwtUtil.validateTokenAndRetrieveSubject(jwt);
-                    UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(name);
+                    UserDetails userDetails = myUserDetailsService.loadUserByUsername(name);
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         name,
                         userDetails.getPassword(),

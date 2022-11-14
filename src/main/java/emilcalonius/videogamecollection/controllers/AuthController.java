@@ -17,10 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.Collections;
@@ -56,6 +53,7 @@ public class AuthController {
             content = @Content)
 
     })
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UserPOSTDTO userPOSTDTO) {
         // If username exists don't add
@@ -74,6 +72,7 @@ public class AuthController {
             .body(Collections.singletonMap("jwt-token", token));
     }
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody LoginCredentials body) {
         try {

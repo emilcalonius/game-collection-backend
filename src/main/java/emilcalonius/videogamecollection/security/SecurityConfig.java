@@ -1,12 +1,11 @@
 package emilcalonius.videogamecollection.security;
 
 import emilcalonius.videogamecollection.repositories.UserRepository;
-import emilcalonius.videogamecollection.services.UserDetailsServiceImpl;
+import emilcalonius.videogamecollection.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,7 +25,7 @@ public class SecurityConfig {
     @Autowired
     private JWTFilter filter;
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private MyUserDetailsService myUserDetailsService;
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,7 +39,7 @@ public class SecurityConfig {
             .antMatchers("/api/user/**").hasAnyRole("USER")
             .antMatchers("/api/game/**").hasAnyRole("USER")
             .and()
-            .userDetailsService(userDetailsServiceImpl)
+            .userDetailsService(myUserDetailsService)
             .exceptionHandling()
             .authenticationEntryPoint(
                     (request, response, authException) ->
