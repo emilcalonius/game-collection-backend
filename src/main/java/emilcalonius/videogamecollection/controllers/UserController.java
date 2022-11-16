@@ -3,6 +3,7 @@ package emilcalonius.videogamecollection.controllers;
 import emilcalonius.videogamecollection.mappers.UserMapper;
 import emilcalonius.videogamecollection.models.User;
 import emilcalonius.videogamecollection.models.UserGETDTO;
+import emilcalonius.videogamecollection.models.UserPATCHDTO;
 import emilcalonius.videogamecollection.models.UserPOSTDTO;
 import emilcalonius.videogamecollection.security.JWTUtil;
 import emilcalonius.videogamecollection.services.UserService;
@@ -53,5 +54,15 @@ public class UserController {
         return ResponseEntity.ok(userMapper.userToUserGETDTO(userService.findByName(username)));
     }
 
-    // TODO update user
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PatchMapping()
+    public ResponseEntity updateUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization, @RequestBody UserPATCHDTO userUpdates) {
+        String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
+        User user = userService.findByName(name);
+        user.setAvatar(userUpdates.getAvatar());
+        user.setBio(userUpdates.getBio());
+        userService.update(user);
+        return ResponseEntity.noContent().build();
+    }
+
 }
