@@ -16,10 +16,11 @@ public class JWTUtil {
     @Value("${jwt_secret}")
     private String secret;
 
-    public String generateToken(String name) throws IllegalArgumentException, JWTCreationException {
+    public String generateToken(String name, int id) throws IllegalArgumentException, JWTCreationException {
         return JWT.create()
                 .withSubject("User Details")
                 .withClaim("name", name)
+                .withClaim("id", id)
                 .withIssuedAt(new Date())
                 .withIssuer("VG_COLLECTION")
                 .sign(Algorithm.HMAC256(secret));

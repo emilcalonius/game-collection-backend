@@ -65,7 +65,7 @@ public class AuthController {
         String encodedPass = passwordEncoder.encode(userPOSTDTO.getPassword());
         userPOSTDTO.setPassword(encodedPass);
         User user = userService.add(userMapper.userPOSTDTOToUser(userPOSTDTO));
-        String token = jwtUtil.generateToken(user.getName());
+        String token = jwtUtil.generateToken(user.getName(), user.getId());
         URI location = URI.create("user/" + user.getId());
         return ResponseEntity
             .created(location)
@@ -81,7 +81,9 @@ public class AuthController {
 
             authManager.authenticate(authInputToken);
 
-            String token = jwtUtil.generateToken(body.getName());
+            User user = userService.findByName(body.getName());
+
+            String token = jwtUtil.generateToken(user.getName(), user.getId());
 
             return Collections.singletonMap("jwt-token", token);
         } catch (AuthenticationException authExc) {
