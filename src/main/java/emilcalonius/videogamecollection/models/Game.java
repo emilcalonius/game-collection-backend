@@ -23,4 +23,6 @@ public class Game {
     private Status status;
     @Column
     private int rating;
+    @Column
+    private String image;
 }

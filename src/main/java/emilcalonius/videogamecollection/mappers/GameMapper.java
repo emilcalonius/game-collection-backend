@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class GameMapper {
     @Autowired
     UserRepository userRepository;
+    @Autowired
     UserService userService;
 
     @Mapping(target = "user", source = "user_id", qualifiedByName = "idToUser")

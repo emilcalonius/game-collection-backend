@@ -9,4 +9,5 @@ public class GameDTO {
     private int user_id;
     private String status;
     private int rating;
+    private String image;
 }

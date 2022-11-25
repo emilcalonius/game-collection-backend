@@ -1,5 +1,6 @@
 package emilcalonius.videogamecollection.controllers;
 
+import emilcalonius.videogamecollection.exceptions.EntityNotFoundException;
 import emilcalonius.videogamecollection.mappers.GameMapper;
 import emilcalonius.videogamecollection.models.Game;
 import emilcalonius.videogamecollection.models.GameDTO;
@@ -9,6 +10,7 @@ import emilcalonius.videogamecollection.services.GameService;
 import emilcalonius.videogamecollection.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -42,6 +44,8 @@ public class GameController {
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping
     public ResponseEntity addGame(@RequestBody GameDTO gameDTO) {
+        if(gameService.ownsGame(gameDTO.getUser_id(), gameDTO.getGame_id()))
+            return new ResponseEntity("User already has game with id: "+gameDTO.getGame_id(), HttpStatus.CONFLICT);
         Game game = gameService.add(gameMapper.gameDTOToGame(gameDTO));
         final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         URI location = URI.create(baseUrl+"/api/v1/post/"+game.getId());

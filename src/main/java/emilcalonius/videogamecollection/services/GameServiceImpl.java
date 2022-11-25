@@ -25,6 +25,11 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public boolean ownsGame(int user_id, int game_id) {
+        return gameRepository.ownsGame(user_id, game_id);
+    }
+
+    @Override
     public Game findById(Integer id) {
         return gameRepository.findById(id).get();
     }
