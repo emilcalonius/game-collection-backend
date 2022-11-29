@@ -48,14 +48,28 @@ public class GameController {
             return new ResponseEntity("User already has game with id: "+gameDTO.getGame_id(), HttpStatus.CONFLICT);
         Game game = gameService.add(gameMapper.gameDTOToGame(gameDTO));
         final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-        URI location = URI.create(baseUrl+"/api/v1/post/"+game.getId());
+        URI location = URI.create(baseUrl+"/api/game"+game.getGame_id());
 
         return ResponseEntity
                 .created(location)
                 .header("Access-Control-Allow-Headers",
                     "Authorization, Access-Control-Allow-Headers, Origin, Accept, location, " +
                     "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
-                .body(game.getId());
+                .body(game.getGame_id());
 
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PatchMapping
+    public ResponseEntity updateGame(@RequestBody GameDTO gameDTO, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
+        String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
+        User user = userService.findByName(name);
+        if(user.getId() != gameDTO.getUser_id()) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("Can not edit other peoples collection");
+        }
+        gameService.update(gameMapper.gameDTOToGame(gameDTO));
+        return ResponseEntity.noContent().build();
     }
 }

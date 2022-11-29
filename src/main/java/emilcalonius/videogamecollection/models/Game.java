@@ -12,8 +12,6 @@ import javax.persistence.*;
 @Table(name = "game")
 public class Game {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     @Column(nullable = false)
     private int game_id;
     @ManyToOne
@@ -23,6 +21,4 @@ public class Game {
     private Status status;
     @Column
     private int rating;
-    @Column
-    private String image;
 }
