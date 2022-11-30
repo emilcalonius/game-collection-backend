@@ -30,6 +30,11 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public Game findGameById(int user_id, int game_id) {
+        return gameRepository.findGameById(user_id, game_id);
+    }
+
+    @Override
     public Game findById(Integer id) {
         return gameRepository.findById(id).get();
     }

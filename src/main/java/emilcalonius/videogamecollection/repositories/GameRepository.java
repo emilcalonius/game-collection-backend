@@ -14,4 +14,7 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
 
     @Query("SELECT CASE WHEN COUNT(g) > 0 THEN true ELSE false END FROM Game g WHERE g.game_id = :game_id AND g.user.id = :user_id")
     boolean ownsGame(int user_id, int game_id);
+
+    @Query("SELECT g FROM Game g WHERE g.user.id = :user_id AND g.game_id = :game_id")
+    Game findGameById(int user_id, int game_id);
 }

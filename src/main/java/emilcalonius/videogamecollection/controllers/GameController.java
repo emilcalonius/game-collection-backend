@@ -42,6 +42,17 @@ public class GameController {
     }
 
     @CrossOrigin(origins = "http://localhost:5173")
+    @GetMapping("/{game_id}")
+    public ResponseEntity<Game> getGameById(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization, @PathVariable int game_id) {
+        String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
+        User user = userService.findByName(name);
+        if(!gameService.ownsGame(user.getId(), game_id)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(gameService.findGameById(user.getId(), game_id));
+    }
+
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping
     public ResponseEntity addGame(@RequestBody GameDTO gameDTO) {
         if(gameService.ownsGame(gameDTO.getUser_id(), gameDTO.getGame_id()))
