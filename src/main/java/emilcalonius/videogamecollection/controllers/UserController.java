@@ -37,7 +37,7 @@ public class UserController {
 
     // TODO user search
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "http://calonius.me")
     @GetMapping()
     public ResponseEntity getLoggedInUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
