@@ -48,13 +48,13 @@ public class UserController {
         return new ResponseEntity<>("", responseHeaders, HttpStatus.SEE_OTHER);
     }
 
-    @CrossOrigin(origins = "https://calonius.me")
+    @CrossOrigin(origins = "http://calonius.me")
     @GetMapping("/{username}")
     public ResponseEntity getUser(@PathVariable String username) {
         return ResponseEntity.ok(userMapper.userToUserGETDTO(userService.findByName(username)));
     }
 
-    @CrossOrigin(origins = "https://calonius.me")
+    @CrossOrigin(origins = "http://calonius.me")
     @PatchMapping()
     public ResponseEntity updateUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization, @RequestBody UserPATCHDTO userUpdates) {
         String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);

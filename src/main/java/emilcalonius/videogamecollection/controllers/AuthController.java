@@ -53,7 +53,7 @@ public class AuthController {
             content = @Content)
 
     })
-    @CrossOrigin(origins = "https://calonius.me")
+    @CrossOrigin(origins = "http://calonius.me")
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UserPOSTDTO userPOSTDTO) {
         // If username exists don't add
@@ -72,7 +72,7 @@ public class AuthController {
             .body(Collections.singletonMap("jwt-token", token));
     }
 
-    @CrossOrigin(origins = "https://calonius.me")
+    @CrossOrigin(origins = "http://calonius.me")
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody LoginCredentials body) {
         try {
