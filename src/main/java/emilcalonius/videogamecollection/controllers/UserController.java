@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "api/user")
 public class UserController {
@@ -37,7 +38,6 @@ public class UserController {
 
     // TODO user search
 
-    @CrossOrigin(origins = "http://calonius.me")
     @GetMapping()
     public ResponseEntity getLoggedInUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
@@ -48,13 +48,11 @@ public class UserController {
         return new ResponseEntity<>("", responseHeaders, HttpStatus.SEE_OTHER);
     }
 
-    @CrossOrigin(origins = "http://calonius.me")
     @GetMapping("/{username}")
     public ResponseEntity getUser(@PathVariable String username) {
         return ResponseEntity.ok(userMapper.userToUserGETDTO(userService.findByName(username)));
     }
 
-    @CrossOrigin(origins = "http://calonius.me")
     @PatchMapping()
     public ResponseEntity updateUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization, @RequestBody UserPATCHDTO userUpdates) {
         String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);

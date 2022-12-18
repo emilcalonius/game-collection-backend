@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "api/auth")
 public class AuthController {
@@ -53,7 +54,6 @@ public class AuthController {
             content = @Content)
 
     })
-    @CrossOrigin(origins = "http://calonius.me")
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UserPOSTDTO userPOSTDTO) {
         // If username exists don't add
@@ -72,7 +72,6 @@ public class AuthController {
             .body(Collections.singletonMap("jwt-token", token));
     }
 
-    @CrossOrigin(origins = "http://calonius.me")
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody LoginCredentials body) {
         try {

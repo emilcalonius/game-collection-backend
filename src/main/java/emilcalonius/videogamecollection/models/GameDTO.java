@@ -10,4 +10,6 @@ public class GameDTO {
     private String status;
     private int rating;
     private boolean completed;
+    private String header_image;
+    private String name;
 }

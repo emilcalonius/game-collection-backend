@@ -25,4 +25,8 @@ public class Game {
     private int rating;
     @Column
     private boolean completed;
+    @Column(nullable = false)
+    private String header_image;
+    @Column(nullable = false)
+    private String name;
 }

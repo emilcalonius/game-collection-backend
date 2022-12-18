@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Collection;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping(path = "api/game")
 public class GameController {
@@ -33,7 +34,6 @@ public class GameController {
         this.userService = userService;
     }
 
-    @CrossOrigin(origins = "http://calonius.me")
     @GetMapping
     public ResponseEntity<Collection<Game>> getAllGamesForUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
@@ -41,7 +41,6 @@ public class GameController {
         return ResponseEntity.ok(gameService.findAllByUser(user.getId()));
     }
 
-    @CrossOrigin(origins = "http://calonius.me")
     @GetMapping("/{game_id}")
     public ResponseEntity<Game> getGameById(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization, @PathVariable int game_id) {
         String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
@@ -52,7 +51,6 @@ public class GameController {
         return ResponseEntity.ok(gameService.findGameById(user.getId(), game_id));
     }
 
-    @CrossOrigin(origins = "http://calonius.me")
     @PostMapping
     public ResponseEntity addGame(@RequestBody GameDTO gameDTO) {
         if(gameService.ownsGame(gameDTO.getUser_id(), gameDTO.getGame_id()))
@@ -70,7 +68,6 @@ public class GameController {
 
     }
 
-    @CrossOrigin(origins = "http://calonius.me")
     @PatchMapping
     public ResponseEntity updateGame(@RequestBody GameDTO gameDTO, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
