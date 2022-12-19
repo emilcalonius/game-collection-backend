@@ -41,16 +41,6 @@ public class GameController {
         return ResponseEntity.ok(gameService.findAllByUser(user.getId()));
     }
 
-    @GetMapping("/{game_id}")
-    public ResponseEntity<Game> getGameById(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization, @PathVariable int game_id) {
-        String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
-        User user = userService.findByName(name);
-        if(!gameService.ownsGame(user.getId(), game_id)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(gameService.findGameById(user.getId(), game_id));
-    }
-
     @PostMapping
     public ResponseEntity addGame(@RequestBody GameDTO gameDTO) {
         if(gameService.ownsGame(gameDTO.getUser_id(), gameDTO.getGame_id()))
@@ -78,6 +68,20 @@ public class GameController {
                     .body("Can not edit other peoples collection");
         }
         gameService.update(gameMapper.gameDTOToGame(gameDTO));
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{game_id}")
+    public ResponseEntity deleteGameById(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization, @PathVariable int game_id) {
+        String name = jwtUtil.validateTokenAndRetrieveSubject(authorization.split(" ")[1]);
+        User user = userService.findByName(name);
+        Game game = gameService.findGameById(user.getId(), game_id);
+        if(game == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Game with id " + game_id + " for user " + name + " not found!");
+        }
+        gameService.deleteById(game.getId());
         return ResponseEntity.noContent().build();
     }
 }

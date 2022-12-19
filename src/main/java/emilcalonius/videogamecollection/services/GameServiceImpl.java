@@ -57,7 +57,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public void deleteById(Integer id) {
         if(!gameRepository.existsById(id)) {
-            logger.warn("No user exists with ID: " + id);
+            logger.warn("No game exists with ID: " + id);
             return;
         }
         gameRepository.deleteById(id);
